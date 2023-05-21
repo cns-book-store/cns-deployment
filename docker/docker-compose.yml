@@ -1,0 +1,49 @@
+version: '3'
+services:
+  cns-catalog-service:
+    depends_on:
+      - cns-catalog-service-db
+    image: cns-catalog-service
+    container_name: cns-catalog-service
+    environment:
+      BPL_JVM_THREAD_COUNT: 50
+      BPL_DEBUG_ENABLED: true
+      BPL_DEBUG_PORT: 8001
+      SPRING_DATASOURCE_URL: jdbc:postgresql://cns-catalog-service-db:5432/cns-catalog
+    ports:
+      - "9001:9001"
+      - "8001:8001"
+    networks:
+      - catalog-network
+  cns-config-service:
+    image: cns-config-service
+    container_name: cns-config-service
+    ports:
+      - "8888:8888"
+      - "9888:9888"
+    environment:
+      # Buildpacks environment variable to configure the number of threads in memory calculation
+      BPL_JVM_THREAD_COUNT: 50
+      # Buildpacks environment variable to enable debug through a socket on port 9888
+      BPL_DEBUG_ENABLED: true
+      BPL_DEBUG_PORT: 9888
+  cns-catalog-service-db:
+    image: postgres:13.3
+    container_name: cns-catalog-service-db
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: cns-catalog
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - catalog-network
+
+networks:
+  catalog-network:
+    driver: bridge
