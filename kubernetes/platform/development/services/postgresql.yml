@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +21,7 @@ spec:
             - name: POSTGRES_USER
               value: postgres
             - name: POSTGRES_PASSWORD
-              value: 123456 
+              value: "123456" 
             - name: POSTGRES_DB
               value: cns-catalog
           resources:
@@ -32,7 +33,6 @@ spec:
               memory: 120Mi
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
