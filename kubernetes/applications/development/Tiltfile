@@ -1,0 +1,4 @@
+include('../../../../cns-config-service/Tiltfile')
+include('../../../../cns-catalog-service/Tiltfile')
+
+update_settings(max_parallel_updates=1)
