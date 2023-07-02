@@ -22,6 +22,9 @@ $ docker build -t cns-catalog-service .
 $ ./gradlew bootBuildImage --imageName ghcr.io/cns-book-store/cns-catalog-service --publishImage -PregistryUrl=ghcr.io -PregistryUsername=cns-book-store -PregistryToken=token
 
 minikube start --cpus 2 --memory 4g --driver docker --profile cns
+minikube addons enable ingress --profile cns
+kubectl apply -f service.yml
+
 kubectl get nodes
 kubectl config get-contexts
 kubectl config current-context
@@ -29,9 +32,8 @@ kubectl config use-context cns
 kubectl apply -f services
 kubectl apply -f k8s/deployment.yml
 kubectl logs deployment/cns-catalog-service
-kubectl apply -f service.yml
 kubectl get svc -l app=catalog-service
 kubectl port-forward service/cns-catalog-service 9001:80
 kubectl delete pod cns-catalog-service-78cb7557cc-b22xg
 kubectl delete all --all --all-namespaces
-
+kubectl get all -n ingress-nginx
