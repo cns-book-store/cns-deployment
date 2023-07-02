@@ -34,6 +34,25 @@ services:
       - "8002:8002"
     networks:
       - catalog-network
+  cns-edge-service:
+    depends_on:
+      - cns-postgres
+      - cns-redis
+    image: cns-edge-service
+    container_name: cns-edge-service
+    environment:
+      BPL_JVM_THREAD_COUNT: 50
+      BPL_DEBUG_ENABLED: true
+      BPL_DEBUG_PORT: 8000
+      CATALOG_SERVICE_URL: http://cns-catalog-service:9001
+      ORDER_SERVICE_URL: http://cns-order-service:9002
+      SPRING_CLOUD_CONFIG_URI: http://cns-config-service:8888
+      SPRING_DATA_REDIS_HOST: cns-redis
+    ports:
+      - "9000:9000"
+      - "8000:8000"
+    networks:
+      - catalog-network
   cns-config-service:
     image: cns-config-service
     container_name: cns-config-service
