@@ -37,3 +37,5 @@ kubectl port-forward service/cns-catalog-service 9001:80
 kubectl delete pod cns-catalog-service-78cb7557cc-b22xg
 kubectl delete all --all --all-namespaces
 kubectl get all -n ingress-nginx
+minikube tunnel --profile cns
+
