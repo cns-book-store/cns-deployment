@@ -1,5 +1,6 @@
 include('../../../../cns-config-service/Tiltfile')
 include('../../../../cns-catalog-service/Tiltfile')
 include('../../../../cns-order-service/Tiltfile')
+include('../../../../cns-edge-service/Tiltfile')
 
 update_settings(max_parallel_updates=1)

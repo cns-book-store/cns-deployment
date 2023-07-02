@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cns-redis
+  labels:
+    db: cns-redis
+spec:
+  selector:
+    matchLabels:
+      db: cns-redis
+  template:
+    metadata:
+      labels:
+        db: cns-redis
+    spec:
+      containers:
+        - name: cns-redis
+          image: redis:7.0
+          resources:
+            requests:
+              cpu: 100m
+              memory: 50Mi
+            limits:
+              cpu: 200m
+              memory: 100Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cns-redis
+  labels:
+    db: cns-redis
+spec:
+  type: ClusterIP
+  selector:
+    db: cns-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
