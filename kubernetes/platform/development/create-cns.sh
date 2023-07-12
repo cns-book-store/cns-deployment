@@ -42,6 +42,19 @@ kubectl wait \
   --selector=db=cns-redis \
   --timeout=180s
 
+echo "⌛ Waiting for RabbitMQ to be deployed..."
+
+while [ $(kubectl get pod -l db=cns-rabbitmq | wc -l) -eq 0 ] ; do
+  sleep 5
+done
+
+echo "⌛ Waiting for RabbitMQ to be ready..."
+
+kubectl wait \
+  --for=condition=ready pod \
+  --selector=db=cns-rabbitmq \
+  --timeout=180s
+
 echo "⛵ Happy Sailing!"
 
 echo "🚜 Starting cns services..."
